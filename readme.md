@@ -1,11 +1,24 @@
-# title
-* hello world
+# IRC-Client
+*  a command-line IRC client written in C. It allows users to connect to an IRC server, join a channel, and send messages to the channel. The program provides a simple and intuitive interface for users to interact with the IRC server.
 
-# description
-* hello world
+# How to use
 
-# how to use
-* hello world
+#### Compiling the Program:
+* To compile the program, navigate to the directory containing the Makefile and run the command make. This will create an executable file called ircy in the bin directory.
+
+#### Running the Program:
+* To run the program, navigate to the bin directory and run the command ./ircy -s <irc-server> -n <nick> -c <channel>. Replace <irc-server> with the hostname or IP address of the IRC server, <nick> with the desired nickname, and <channel> with the desired channel.
+
+**Example**: `./ircy -s irc.example.com -n <username> -c <your-channel>`
+
+#### Using the Program:
+* Once the program is running, you can type messages to send to the channel. The program will automatically send the messages to the channel. You can also use IRC commands, such as /join to join a different channel, or /quit to quit the program.
+
+#### Available Options:
+
+* `-s <irc-server>`: Specify the IRC server to connect to.
+* `-n <nick>`: Specify the nickname to use.
+* `-c <channel>`: Specify the channel to join.
 
 # Changes & Additions
 * 1. Error Handling: Added error handling for socket and connect calls.
