@@ -1,40 +1,58 @@
 # IRC-Client v2
-> A command-line IRC client written in C. It allows users to connect to an IRC server, join a channel, and send messages to the channel. The program provides a simple and intuitive interface for users to interact with the IRC server.
+> A command-line IRC client written in C that allows users to connect to an IRC server, join a channel, and send messages. This program provides a simple and intuitive interface for interacting with IRC servers.
 
-This improved version includes:
+## Features
+- **Improved Error Handling**: Robust error handling ensures stability and reliability.
+- **Code Organization**: Modular code structure for better readability and maintainability.
+- **Memory Management**: Efficient use of system resources with no memory leaks.
+- **Logging**: Comprehensive logging for debugging and tracking program execution.
+- **Threading**: Concurrent input/output handling using threads for enhanced performance.
 
-- Error Handling: Improved error handling to be more robust.
-- Code Organization: Split the code into multiple files for better readability and maintainability.
-- Memory Management: Ensured there are no memory leaks.
-- Logging: Added logging for better debugging.
-- Threading: Used threads instead of fork to handle input/output concurrently.
+## How to Use
 
-# How to use
+### Compiling the Program
+1. Navigate to the directory containing the `Makefile`.
+2. Run the command `make` to compile the program.
+3. The executable file `ircy` will be created in the `bin` directory.
 
-#### Compiling the Program:
-* To compile the program, navigate to the directory containing the Makefile and run the command make. This will create an executable file called ircy in the bin directory.
+### Running the Program
+1. Navigate to the `bin` directory.
+2. Run the command: 
+   ```bash
+   ./ircy -s <irc-server> -n <nick> -c <channel>
+   ```
+3. Replace `<irc-server>` with the hostname or IP address of the IRC server.
+4. Replace `<nick>` with your desired nickname.
+5. Replace `<channel>` with the channel you wish to join.
 
-#### Running the Program:
-* To run the program, navigate to the bin directory and run the command ./ircy -s <irc-server> -n <nick> -c <channel>. Replace <irc-server> with the hostname or IP address of the IRC server, <nick> with the desired nickname, and <channel> with the desired channel.
+Example: `./ircy -s irc.example.com -n Disease -c channel-1`
 
-**Example**: `./ircy -s irc.example.com -n <username> -c <your-channel>`
 
-#### Using the Program:
-* Once the program is running, you can type messages to send to the channel. The program will automatically send the messages to the channel. You can also use IRC commands, such as /join to join a different channel, or /quit to quit the program.
+## Using the Program
 
-#### Available Options:
+Type messages to send them to the channel.
+ 
+Use IRC commands like `/join` to switch channels or `/quit` to exit the program.
 
-* `-s <irc-server>`: Specify the IRC server to connect to.
-* `-n <nick>`: Specify the nickname to use.
-* `-c <channel>`: Specify the channel to join.
+### Available Options
+- `-s <irc-server>`: Specify the IRC server to connect to.
+- `-n <nick>`: Specify the nickname to use.
+- `-c <channel>`: Specify the channel to join.
 
-# Changes & Additions
-* **Error Handling**: Added error handling for socket and connect calls.
-* **Code Organization**: Broke down the main function into separate functions, such as parse_args and startup.
-* **Code Style**: Improved code readability by using consistent indentation and spacing, and more descriptive variable names.
-* **Security**: Added input validation for user-provided input, and used safer alternatives for string manipulation.
-* **Performance**: Used non-blocking I/O and asynchronous I/O to improve performance and responsiveness.
-* **Portability**: Used more portable alternatives for inet_pton and inet_ntop functions.
-* **Command-line Argument Parsing**: Added command-line argument parsing using getopt library.
-* **IRC Protocol Implementation**: Implemented more IRC protocol features, such as handling PING and PONG messages.
-* **User Interface**: Added a more user-friendly interface, such as a command-line interface with more features.
+## Changes & Additions
+- **Error Handling**: Enhanced error handling for socket and connection operations.
+- **Code Organization**: Refactored the main function into separate, modular functions.
+- **Code Style**: Improved readability with consistent formatting and descriptive variable names.
+- **Security**: Input validation and safer string manipulation techniques.
+- **Performance**: Non-blocking and asynchronous I/O for improved responsiveness.
+- **Portability**: Utilized portable functions for network operations.
+- **Command-line Argument Parsing**: Implemented using the getopt library.
+- **IRC Protocol Implementation**: Added support for handling PING/PONG messages.
+- **User Interface**: Enhanced command-line interface with additional features.
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request with your improvements.
+
+#### License
+> This project is licensed under the MIT License. 2024
