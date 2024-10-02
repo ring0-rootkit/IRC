@@ -1,5 +1,13 @@
-# IRC-Client
-*  a command-line IRC client written in C. It allows users to connect to an IRC server, join a channel, and send messages to the channel. The program provides a simple and intuitive interface for users to interact with the IRC server.
+# IRC-Client v2
+> A command-line IRC client written in C. It allows users to connect to an IRC server, join a channel, and send messages to the channel. The program provides a simple and intuitive interface for users to interact with the IRC server.
+
+This improved version includes:
+
+- Error Handling: Improved error handling to be more robust.
+- Code Organization: Split the code into multiple files for better readability and maintainability.
+- Memory Management: Ensured there are no memory leaks.
+- Logging: Added logging for better debugging.
+- Threading: Used threads instead of fork to handle input/output concurrently.
 
 # How to use
 
