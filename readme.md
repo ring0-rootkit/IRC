@@ -1,4 +1,4 @@
-# IRC-Client v2.2
+# IRC-Client v2
 > A command-line IRC client written in C that allows users to connect to an IRC server, join a channel, and send messages. This program provides a simple and intuitive interface for interacting with IRC servers.
 
 ## Features
