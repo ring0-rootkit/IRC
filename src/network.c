@@ -33,5 +33,6 @@ int connect_to_server(const char* ip) {
         return -1;
     }
 
+    log_info("Connected to server successfully.");
     return sockfd;
 }
