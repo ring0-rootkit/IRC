@@ -15,7 +15,7 @@ int connect_to_server(const char* ip) {
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) {
         log_error("Failed to create socket.");
-        return sockfd;
+        return -1;
     }
 
     server_addr.sin_family = AF_INET;
@@ -23,12 +23,14 @@ int connect_to_server(const char* ip) {
 
     if (inet_pton(AF_INET, ip, &server_addr.sin_addr) <= 0) {
         log_error("Invalid address.");
-        return 1;  // Should return -1 for consistency
+        close(sockfd);
+        return -1;
     }
-    
+
     if (connect(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
         log_error("Failed to connect to server.");
-        return 1;  // Should return -1 and close socket
+        close(sockfd);
+        return -1;
     }
 
     return sockfd;
