@@ -23,12 +23,12 @@ int connect_to_server(const char* ip) {
 
     if (inet_pton(AF_INET, ip, &server_addr.sin_addr) <= 0) {
         log_error("Invalid address.");
-        return 1;
+        return 1;  // Should return -1 for consistency
     }
-
+    
     if (connect(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
         log_error("Failed to connect to server.");
-        return 1;
+        return 1;  // Should return -1 and close socket
     }
 
     return sockfd;
