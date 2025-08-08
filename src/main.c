@@ -7,8 +7,6 @@
 #include "network.h"
 #include "utils.h"
 
-irc_config_t config;
-
 void cleanup(int sig) {
     (void)sig;
     if (config.sockfd != 0) {
