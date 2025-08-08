@@ -1,6 +1,7 @@
 #ifndef IRC_H
 #define IRC_H
 
+#include <netinet/in.h>
 #include <pthread.h>
 
 #define MAX_MSG_LENGTH 512
