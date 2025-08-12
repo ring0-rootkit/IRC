@@ -1,58 +1,96 @@
 # IRC - Internet Relay Client
-> A command-line IRC client written in C that allows users to connect to an IRC server, join a channel, and send messages. This program provides a simple and intuitive interface for interacting with IRC servers.
+
+A command-line IRC client written in C that allows users to connect to IRC servers, join channels, and send messages. This program provides a simple and reliable interface for interacting with IRC networks.
 
 ## Features
-- **Improved Error Handling**: Robust error handling ensures stability and reliability.
-- **Code Organization**: Modular code structure for better readability and maintainability.
-- **Memory Management**: Efficient use of system resources with no memory leaks.
-- **Logging**: Comprehensive logging for debugging and tracking program execution.
-- **Threading**: Concurrent input/output handling using threads for enhanced performance.
 
-## How to Use
+- Robust hostname resolution supporting both domain names and IP addresses
+- Concurrent input/output handling using POSIX threads
+- Full IRC protocol compliance with proper handshake implementation
+- PING/PONG keepalive handling for stable connections
+- Signal handling for clean shutdown procedures
+- Comprehensive error handling and logging system
+- Memory-safe string operations and buffer management
+- Modular code architecture for maintainability
 
-### Compiling the Program
-1. Navigate to the directory containing the `Makefile`.
-2. Run the command `make` to compile the program.
-3. The executable file `ircy` will be created in the `bin` directory.
+## Building
 
-### Running the Program
-1. Navigate to the `bin` directory.
-2. Run the command: 
-   ```bash
-   ./ircy -s <irc-server> -n <nick> -c <channel>
-   ```
-3. Replace `<irc-server>` with the hostname or IP address of the IRC server.
-4. Replace `<nick>` with your desired nickname.
-5. Replace `<channel>` with the channel you wish to join.
+Navigate to the project directory and compile using make:
 
-Example: `./ircy -s irc.example.com -n Disease -c channel-1`
+```
+make
+```
 
+The executable will be created as `bin/ircy`.
 
-## Using the Program
+For debug builds with additional logging:
 
-Type messages to send them to the channel.
- 
-Use IRC commands like `/join` to switch channels or `/quit` to exit the program.
+```
+make debug
+```
 
-### Available Options
-- `-s <irc-server>`: Specify the IRC server to connect to.
-- `-n <nick>`: Specify the nickname to use.
-- `-c <channel>`: Specify the channel to join.
+## Usage
 
-## Changes & Additions
-- **Error Handling**: Enhanced error handling for socket and connection operations.
-- **Code Organization**: Refactored the main function into separate, modular functions.
-- **Code Style**: Improved readability with consistent formatting and descriptive variable names.
-- **Security**: Input validation and safer string manipulation techniques.
-- **Performance**: Non-blocking and asynchronous I/O for improved responsiveness.
-- **Portability**: Utilized portable functions for network operations.
-- **Command-line Argument Parsing**: Implemented using the getopt library.
-- **IRC Protocol Implementation**: Added support for handling PING/PONG messages.
-- **User Interface**: Enhanced command-line interface with additional features.
+Run the client with required parameters:
 
-## Contributing
+```
+./bin/ircy -s <server> -n <nickname> -c <channel>
+```
 
-Contributions are welcome! Please fork the repository and submit a pull request with your improvements.
+### Parameters
 
-#### License
-> This project is licensed under the MIT License. 2024
+- `-s <server>`: IRC server hostname or IP address
+- `-n <nickname>`: Your desired nickname on the network
+- `-c <channel>`: Channel to join upon connection
+
+### Example
+
+```
+./bin/ircy -s irc.libera.chat -n myuser -c general
+```
+
+## Commands
+
+Once connected, you can use standard IRC commands:
+
+- Type messages normally to send to the current channel
+- `/join #channelname` - Join a different channel
+- `/quit` - Exit the client cleanly
+
+## Network Requirements
+
+- Standard IRC port 6667 is used for all connections
+- IPv4 support required (IPv6 planned for future releases)
+- Outbound TCP connections must be permitted through firewalls
+
+## Implementation Details
+
+The client uses a multi-threaded architecture:
+
+- Main thread handles initialization and coordination
+- Input thread processes user commands and keyboard input
+- Server thread manages incoming IRC messages and protocol responses
+
+All network operations use standard POSIX socket APIs with proper error handling. The code follows C99 standards with POSIX extensions for threading and network functions.
+
+## Installation
+
+To install system-wide:
+
+```
+make install
+```
+
+This copies the binary to `/usr/local/bin/ircy`.
+
+## Compatibility
+
+Tested on Linux systems with gcc compiler. Requires:
+
+- POSIX-compliant system
+- pthread library support
+- Standard C library with networking functions
+
+## License
+
+This project is licensed under the MIT License.
