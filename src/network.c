@@ -8,31 +8,57 @@
 #include "network.h"
 #include "utils.h"
 
-int connect_to_server(const char* ip) {
-    int sockfd;
-    struct sockaddr_in server_addr;
+int connect_to_server(const char* hostname_or_ip) {
+    int sockfd = -1;
+    struct addrinfo hints, *result, *rp;
+    char port_str[] = "6667";
+    int status;
 
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd < 0) {
-        log_error("Failed to create socket.");
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_INET;        // IPv4 only for now
+    hints.ai_socktype = SOCK_STREAM;  // TCP
+    hints.ai_flags = 0;
+    hints.ai_protocol = 0;
+
+    // Resolve hostname/IP to address info
+    status = getaddrinfo(hostname_or_ip, port_str, &hints, &result);
+    if (status != 0) {
+        char error_msg[256];
+        snprintf(error_msg, sizeof(error_msg), "getaddrinfo failed: %s", gai_strerror(status));
+        log_error(error_msg);
         return -1;
     }
 
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(6667);
+    // Try each address until successful connection
+    for (rp = result; rp != NULL; rp = rp->ai_next) {
+        sockfd = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
+        if (sockfd == -1) {
+            continue;  // Try next address
+        }
 
-    if (inet_pton(AF_INET, ip, &server_addr.sin_addr) <= 0) {
-        log_error("Invalid address.");
+        if (connect(sockfd, rp->ai_addr, rp->ai_addrlen) != -1) {
+            break;  // Success
+        }
+
         close(sockfd);
+        sockfd = -1;
+    }
+
+    freeaddrinfo(result);
+
+    if (sockfd == -1) {
+        log_error("Failed to connect to any address.");
         return -1;
     }
 
-    if (connect(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
-        log_error("Failed to connect to server.");
-        close(sockfd);
-        return -1;
-    }
+    // Log the connected address
+    struct sockaddr_in* addr_in = (struct sockaddr_in*)rp->ai_addr;
+    char ip_str[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &addr_in->sin_addr, ip_str, INET_ADDRSTRLEN);
+    
+    char log_msg[256];
+    snprintf(log_msg, sizeof(log_msg), "Connected to %s (%s:6667)", hostname_or_ip, ip_str);
+    log_info(log_msg);
 
-    log_info("Connected to server successfully.");
     return sockfd;
 }
