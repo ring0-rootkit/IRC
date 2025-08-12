@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <sys/socket.h>
+#include <getopt.h>     
+#include <time.h>       
 #include "irc.h"
 #include "network.h"
 #include "utils.h"
@@ -27,15 +29,12 @@ void* handle_input(void* arg) {
             continue;
         }
 
-        // Strip newline character
         buf[strcspn(buf, "\n")] = '\0';
 
-        // Skip empty messages
         if (strlen(buf) == 0) {
             continue;
         }
 
-        // Handle IRC commands starting with '/'
         if (buf[0] == '/') {
             if (strncmp(buf, "/quit", 5) == 0) {
                 send_command("QUIT :Leaving\r\n");
@@ -62,14 +61,12 @@ void* handle_server_response(void* arg) {
     while ((bytes_received = recv(config.sockfd, buffer, sizeof(buffer) - 1, 0)) > 0) {
         buffer[bytes_received] = '\0';
         
-        // Handle PING messages - IRC servers require PONG responses
         if (strncmp(buffer, "PING", 4) == 0) {
             char pong[MAX_MSG_LENGTH];
             snprintf(pong, sizeof(pong), "PONG%s", buffer + 4);
             send_command(pong);
             log_info("Responded to server PING");
         } else {
-            // Print server messages to stdout
             printf("%s", buffer);
             fflush(stdout);
         }
@@ -91,8 +88,12 @@ int send_initial_commands(const char* nick, const char* channel) {
     snprintf(cmdbuf, sizeof(cmdbuf), "USER %s 0 * :%s\r\n", nick, nick);
     send_command(cmdbuf);
 
-    // Small delay to allow registration
-    usleep(100000); // 100ms
+    #ifdef _POSIX_C_SOURCE
+        usleep(100000); 
+    #else
+        struct timespec ts = {0, 100000000}; 
+        nanosleep(&ts, NULL);
+    #endif
 
     snprintf(cmdbuf, sizeof(cmdbuf), "JOIN #%s\r\n", channel);
     send_command(cmdbuf);
@@ -110,14 +111,12 @@ int startup(const char* server, const char* nick, const char* channel) {
 
     send_initial_commands(nick, channel);
 
-    // Create thread to handle server responses
     if (pthread_create(&config.server_thread, NULL, handle_server_response, NULL) != 0) {
         log_error("Failed to create server response thread.");
         close(config.sockfd);
         return 1;
     }
 
-    // Create thread to handle user input
     if (pthread_create(&config.input_thread, NULL, handle_input, NULL) != 0) {
         log_error("Failed to create input thread.");
         pthread_cancel(config.server_thread);
