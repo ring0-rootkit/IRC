@@ -4,6 +4,10 @@ A command-line IRC client written in C that allows users to connect to IRC serve
 
 <img width="679" height="217" alt="image" src="https://github.com/user-attachments/assets/4b737ce1-59bb-49f7-93d9-2363be5e9e46" />
 
+TODO | Is Done?
+---|---
+Make graphical client | no
+
 
 ## Features
 
