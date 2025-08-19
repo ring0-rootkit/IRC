@@ -1,12 +1,9 @@
+# Originally made by @CPScript
 # IRC - Internet Relay Client
 
 A command-line IRC client written in C that allows users to connect to IRC servers, join channels, and send messages. This program provides a simple and reliable interface for interacting with IRC networks.
 
 <img width="679" height="217" alt="image" src="https://github.com/user-attachments/assets/4b737ce1-59bb-49f7-93d9-2363be5e9e46" />
-
-TODO | Is Done?
----|---
-Make graphical client | no
 
 
 ## Features
