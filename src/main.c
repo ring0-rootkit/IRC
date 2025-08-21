@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
     printf("Connecting to %s as %s, joining #%s\n", 
            config.server, config.nick, config.channel);
 
-    if (startup(config.server, config.nick, config.channel) != 0) {
+    if (startup(config.server, config.port, config.nick, config.channel) != 0) {
         log_error("Startup failed.");
         return 1;
     }

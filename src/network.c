@@ -8,10 +8,12 @@
 #include "network.h"
 #include "utils.h"
 
-int connect_to_server(const char* hostname_or_ip) {
+int connect_to_server(const char* hostname_or_ip, const char* port) {
     int sockfd = -1;
     struct addrinfo hints, *result, *rp;
-    char port_str[] = "6667";
+    if (strlen(port) == 0) {
+	    port = "6667";
+    }
     int status;
 
     memset(&hints, 0, sizeof(hints));
@@ -21,7 +23,7 @@ int connect_to_server(const char* hostname_or_ip) {
     hints.ai_protocol = 0;
 
     // Resolve hostname/IP to address info
-    status = getaddrinfo(hostname_or_ip, port_str, &hints, &result);
+    status = getaddrinfo(hostname_or_ip, port, &hints, &result);
     if (status != 0) {
         char error_msg[256];
         snprintf(error_msg, sizeof(error_msg), "getaddrinfo failed: %s", gai_strerror(status));
@@ -54,11 +56,17 @@ int connect_to_server(const char* hostname_or_ip) {
     // Log the connected address
     struct sockaddr_in* addr_in = (struct sockaddr_in*)rp->ai_addr;
     char ip_str[INET_ADDRSTRLEN];
-    inet_ntop(AF_INET, &addr_in->sin_addr, ip_str, INET_ADDRSTRLEN);
-    
+    printf("sin_addr: %p\n", (void*)rp->ai_addr);
+    printf("cannon name: %s\n", rp->ai_canonname);
+    if(!inet_ntop(AF_INET, &addr_in->sin_addr, ip_str, INET_ADDRSTRLEN)) {
+	    printf("error occured when trying to convert address to display format\n");
+	    exit(1);
+    };
+
     char log_msg[256];
-    snprintf(log_msg, sizeof(log_msg), "Connected to %s (%s:6667)", hostname_or_ip, ip_str);
+    snprintf(log_msg, sizeof(log_msg), "Connected to %s (%s:%s)", hostname_or_ip, ip_str, port);
     log_info(log_msg);
+    printf("%d\n", __LINE__);
 
     return sockfd;
 }

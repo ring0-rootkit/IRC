@@ -102,8 +102,8 @@ int send_initial_commands(const char* nick, const char* channel) {
     return 0;
 }
 
-int startup(const char* server, const char* nick, const char* channel) {
-    config.sockfd = connect_to_server(server);
+int startup(const char* server, const char* port, const char* nick, const char* channel) {
+    config.sockfd = connect_to_server(server, port);
     if (config.sockfd < 0) {
         log_error("Failed to connect to server.");
         return 1;
@@ -132,7 +132,7 @@ int parse_args(int argc, char** argv, irc_config_t* config) {
     int opt;
     int server_set = 0, nick_set = 0, channel_set = 0;
 
-    while ((opt = getopt(argc, argv, "s:n:c:")) != -1) {
+    while ((opt = getopt(argc, argv, "s:n:c:p:")) != -1) {
         switch (opt) {
             case 's':
                 strncpy(config->server, optarg, INET6_ADDRSTRLEN - 1);
@@ -148,6 +148,10 @@ int parse_args(int argc, char** argv, irc_config_t* config) {
                 strncpy(config->channel, optarg, MAX_CHANNEL_LENGTH - 1);
                 config->channel[MAX_CHANNEL_LENGTH - 1] = '\0';
                 channel_set = 1;
+                break;
+            case 'p':
+                strncpy(config->port, optarg, MAX_PORT_SIZE - 1);
+                config->channel[MAX_PORT_SIZE - 1] = '\0';
                 break;
             default:
                 printf("Usage: %s -s <irc-server> -n <nick> -c <channel>\n", argv[0]);
