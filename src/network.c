@@ -53,20 +53,20 @@ int connect_to_server(const char* hostname_or_ip, const char* port) {
         return -1;
     }
 
-    // Log the connected address
-    struct sockaddr_in* addr_in = (struct sockaddr_in*)rp->ai_addr;
     char ip_str[INET_ADDRSTRLEN];
-    printf("sin_addr: %p\n", (void*)rp->ai_addr);
-    printf("cannon name: %s\n", rp->ai_canonname);
+// I HATE MACOS
+#if defined(__linux__)
+    printf("I love you fellow linux user <3\n");
+    struct sockaddr_in* addr_in = (struct sockaddr_in*)rp->ai_addr;
     if(!inet_ntop(AF_INET, &addr_in->sin_addr, ip_str, INET_ADDRSTRLEN)) {
-	    printf("error occured when trying to convert address to display format\n");
-	    exit(1);
+	printf("error occured when trying to convert address to display format\n");
+	exit(1);
     };
+#endif
 
     char log_msg[256];
     snprintf(log_msg, sizeof(log_msg), "Connected to %s (%s:%s)", hostname_or_ip, ip_str, port);
     log_info(log_msg);
-    printf("%d\n", __LINE__);
 
     return sockfd;
 }

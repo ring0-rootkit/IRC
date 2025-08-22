@@ -1,3 +1,7 @@
-- implement SSL
+# SSL
+dont wanna bother for now so use hitch to wrap your sockets
+git@github.com:varnish/hitch.git
+
+- macos dns resolve support
 - telegram integration
 - alias support (server hostname -> custom name)
